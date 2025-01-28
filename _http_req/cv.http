@@ -1,0 +1,5 @@
+@url = http://localhost:8081
+@cvId = 1
+
+### GET CV by ID
+GET {{url}}/cv/{{cvId}}

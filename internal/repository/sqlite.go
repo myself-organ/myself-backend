@@ -39,4 +39,14 @@ func (r *SQLiteRepository) Init() error {
 	return nil
 }
 
+func (r *SQLiteRepository) FindByID(id int) (*CV, error) {
+	query := "SELECT * FROM cv WHERE id = ?"
+	row := r.db.QueryRow(query, id)
+	cv := &CV{}
+	if err := row.Scan(&cv.ID, &cv.Name, &cv.Email, &cv.Phone, &cv.Address); err != nil {
+		return nil, fmt.Errorf("failed to find cv: %w", err)
+	}
+	return cv, nil
+}
+
 // ...other methods to interact with the database...

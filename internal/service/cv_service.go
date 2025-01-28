@@ -17,4 +17,8 @@ func (s *CVService) CreateCV(cv domain.CV) error {
 	return s.repo.Save(cv)
 }
 
+func (s *CVService) GetCVByID(id int) (*domain.CV, error) {
+	return s.repo.FindByID(id)
+}
+
 // ...other business logic methods...

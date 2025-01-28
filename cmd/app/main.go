@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"myself-backend/internal/repository"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
@@ -17,6 +18,21 @@ func main() {
 		log.Fatalf("Failed to initialize repository: %v", err)
 	}
 	fmt.Printf("Repository initialized: %v\n", repo)
+
+	router.GET("/cv/:id", func(c *gin.Context) {
+		id := c.Param("id")
+		intID, err := strconv.Atoi(id)
+		if err != nil {
+			c.JSON(400, gin.H{"error": "Invalid ID"})
+			return
+		}
+		cv, err := repo.FindByID(intID)
+		if err != nil {
+			c.JSON(500, gin.H{"error": err.Error()})
+			return
+		}
+		c.JSON(200, cv)
+	})
 
 	router.GET("/ping", func(c *gin.Context) {
 		c.JSON(200, gin.H{
