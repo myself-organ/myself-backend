@@ -34,10 +34,26 @@ func main() {
 		c.JSON(200, cv)
 	})
 
-	router.GET("/ping", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"message": "pong",
-		})
+	router.POST("/cv", func(c *gin.Context) {
+		var cv repository.CV
+		if err := c.BindJSON(&cv); err != nil {
+			c.JSON(400, gin.H{"error": err.Error()})
+			return
+		}
+		if err := repo.Save(cv); err != nil {
+			c.JSON(500, gin.H{"error": err.Error()})
+			return
+		}
+		c.JSON(201, gin.H{"message": "success"})
+	})
+
+	router.GET("/cvs", func(c *gin.Context) {
+		cvs, err := repo.GetAll()
+		if err != nil {
+			c.JSON(500, gin.H{"error": err.Error()})
+			return
+		}
+		c.JSON(200, cvs)
 	})
 
 	router.POST("/upload", func(c *gin.Context) {

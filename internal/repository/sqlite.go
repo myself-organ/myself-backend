@@ -49,4 +49,32 @@ func (r *SQLiteRepository) FindByID(id int) (*CV, error) {
 	return cv, nil
 }
 
+func (r *SQLiteRepository) Save(cv CV) error {
+	query := "INSERT INTO cv (name, email, phone, address) VALUES (?, ?, ?, ?)"
+	_, err := r.db.Exec(query, cv.Name, cv.Email, cv.Phone, cv.Address)
+	if err != nil {
+		return fmt.Errorf("failed to save cv: %w", err)
+	}
+	return nil
+}
+
+func (r *SQLiteRepository) GetAll() ([]*CV, error) {
+	query := "SELECT * FROM cv"
+	rows, err := r.db.Query(query)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get all cvs: %w", err)
+	}
+	defer rows.Close()
+
+	cvs := []*CV{}
+	for rows.Next() {
+		cv := &CV{}
+		if err := rows.Scan(&cv.ID, &cv.Name, &cv.Email, &cv.Phone, &cv.Address); err != nil {
+			return nil, fmt.Errorf("failed to scan cv: %w", err)
+		}
+		cvs = append(cvs, cv)
+	}
+	return cvs, nil
+}
+
 // ...other methods to interact with the database...

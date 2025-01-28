@@ -50,4 +50,13 @@ func (h *CVHandler) GetCVByID(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(cv)
 }
 
+func (h *CVHandler) GetAllCVs(w http.ResponseWriter, r *http.Request) {
+	cvs, err := h.service.GetAllCVs()
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	json.NewEncoder(w).Encode(cvs)
+}
+
 // ...other HTTP handlers...

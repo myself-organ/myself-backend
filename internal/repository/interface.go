@@ -5,7 +5,7 @@ import "myself-backend/internal/domain"
 type CVRepository interface {
 	Save(cv domain.CV) error
 	FindByID(id int) (*domain.CV, error)
-	// ...other methods...
+	GetAll() ([]domain.CV, error)
 }
 
 type CV struct {

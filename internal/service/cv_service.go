@@ -21,4 +21,8 @@ func (s *CVService) GetCVByID(id int) (*domain.CV, error) {
 	return s.repo.FindByID(id)
 }
 
+func (s *CVService) GetAllCVs() ([]domain.CV, error) {
+	return s.repo.GetAll()
+}
+
 // ...other business logic methods...

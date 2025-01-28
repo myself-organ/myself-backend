@@ -1,5 +1,19 @@
 @url = http://localhost:8081
-@cvId = 1
+@cvId = 2
+
+### POST CV
+POST {{url}}/cv
+Content-Type: application/json
+
+{
+    "name": "John Doe 2",
+    "email": "test@mail2.ru",
+    "phone": "1234567892",
+    "address": "124 Main St"
+}
 
 ### GET CV by ID
 GET {{url}}/cv/{{cvId}}
+
+### GET all CVs
+GET {{url}}/cvs
